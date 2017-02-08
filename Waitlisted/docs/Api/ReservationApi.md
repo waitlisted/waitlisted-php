@@ -66,6 +66,11 @@ Delete a reservation.
 <?php
 require_once(__DIR__ . '/vendor/autoload.php');
 
+// Configure API key authorization: api_key
+Waitlisted\Configuration::getDefaultConfiguration()->setApiKey('X-API-Key', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// Waitlisted\Configuration::getDefaultConfiguration()->setApiKeyPrefix('X-API-Key', 'Bearer');
+
 $api_instance = new Waitlisted\Api\ReservationApi();
 $body = new \Waitlisted\Models\ReservationRequest(); // \Waitlisted\Models\ReservationRequest | Reservation Data
 
@@ -89,7 +94,7 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[api_key](../../README.md#api_key)
 
 ### HTTP request headers
 
