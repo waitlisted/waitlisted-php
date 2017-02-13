@@ -103,6 +103,101 @@ class ReservationApi
     }
 
     /**
+     * Operation activateReservation
+     *
+     * 
+     *
+     * @param \Waitlisted\Models\ReservationRequest $body Reservation Data (required)
+     * @return \Waitlisted\Models\ReservationsResponse
+     * @throws \Waitlisted\ApiException on non-2xx response
+     */
+    public function activateReservation($body)
+    {
+        list($response) = $this->activateReservationWithHttpInfo($body);
+        return $response;
+    }
+
+    /**
+     * Operation activateReservationWithHttpInfo
+     *
+     * 
+     *
+     * @param \Waitlisted\Models\ReservationRequest $body Reservation Data (required)
+     * @return Array of \Waitlisted\Models\ReservationsResponse, HTTP status code, HTTP response headers (array of strings)
+     * @throws \Waitlisted\ApiException on non-2xx response
+     */
+    public function activateReservationWithHttpInfo($body)
+    {
+        // verify the required parameter 'body' is set
+        if ($body === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $body when calling activateReservation');
+        }
+        // parse inputs
+        $resourcePath = "/reservations/activate";
+        $httpBody = '';
+        $queryParams = array();
+        $headerParams = array();
+        $formParams = array();
+        $_header_accept = $this->apiClient->selectHeaderAccept(array('application/json'));
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
+        }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(array('application/json'));
+
+        // default format to json
+        $resourcePath = str_replace("{format}", "json", $resourcePath);
+
+        // body params
+        $_tempBody = null;
+        if (isset($body)) {
+            $_tempBody = $body;
+        }
+
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            $httpBody = $_tempBody; // $_tempBody is the method argument, if present
+        } elseif (count($formParams) > 0) {
+            $httpBody = $formParams; // for HTTP post (form)
+        }
+        // this endpoint requires API key authentication
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('X-API-Key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['X-API-Key'] = $apiKey;
+        }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'POST',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\Waitlisted\Models\ReservationsResponse',
+                '/reservations/activate'
+            );
+
+            return array($this->apiClient->getSerializer()->deserialize($response, '\Waitlisted\Models\ReservationsResponse', $httpHeader), $statusCode, $httpHeader);
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Waitlisted\Models\ReservationsResponse', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 401:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Waitlisted\Models\ErrorResponse', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\Waitlisted\Models\ErrorResponse', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
+
+            throw $e;
+        }
+    }
+
+    /**
      * Operation createReservation
      *
      * 
